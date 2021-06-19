@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types'
 
-const bookShelfChanger = ({id,updateBookShelf}) => {
+const bookShelfChanger = ({id,updateBookShelf,shelf}) => {
   
   
   
     return (
     <div className="book-shelf-changer">
-      <select onClick={(event)=>updateBookShelf(id,event.target.value)}>
+      <select value={shelf} onChange={(event)=>updateBookShelf(id,event.target.value)}>
         <option value="move" disabled>
           Move to...
         </option>
@@ -22,7 +22,8 @@ const bookShelfChanger = ({id,updateBookShelf}) => {
 };
 bookShelfChanger.propTypes = {
   id:PropTypes.string.isRequired,
-  updateBookShelf:PropTypes.func.isRequired
+  updateBookShelf:PropTypes.func.isRequired,
+  shelf:PropTypes.string.isRequired
 
 };
 

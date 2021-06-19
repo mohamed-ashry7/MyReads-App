@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types'
 import BookShelfChanger from '../BookShelfChanger/BookShelfChanger'
-const book = ({id,backGroundURL,title,authors,updateBookShelf}) => {
+const book = ({id,backGroundURL,title,authors,updateBookShelf,shelf}) => {
   
   
   
@@ -17,7 +17,7 @@ const book = ({id,backGroundURL,title,authors,updateBookShelf}) => {
               `url(${backGroundURL})`,
           }}
         ></div>
-        <BookShelfChanger id ={id} updateBookShelf={updateBookShelf}/>
+        <BookShelfChanger id ={id} updateBookShelf={updateBookShelf} shelf={shelf}/>
       </div>
         <div className="book-title">{title}</div>
         <div className="book-authors">{authors.map(author=>(`${author} `))}</div>

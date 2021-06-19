@@ -25,19 +25,31 @@ class BooksApp extends React.Component {
   }
 
   updateBookShelf = (id, shelf) => {
-    let doesExist = false;
-    const updatedBooks = this.state.books.map((book) => ({ ...book }));
+    let doesExist = false
+    let searchExist=false
+    const updatedSearchBooks = [...this.state.searchedBooks]
+    const updatedBooks = [...this.state.books];
     updatedBooks.forEach((book) => {
       if (book.id === id) {
         book.shelf = shelf;
         doesExist = true;
       }
     });
+    updatedSearchBooks.forEach((b)=>{
+      if (b.id===id){
+        b.shelf= shelf
+        searchExist=true
+      }
+    })
     if (doesExist) {
       this.setState({
         books: updatedBooks,
       });
     }
+    if (searchExist){
+      this.setState({searchedBooks:updatedSearchBooks})
+    }
+    
     get(id).then((book) =>
       update(book, shelf).then(() => {
         if (!doesExist) {
@@ -45,7 +57,8 @@ class BooksApp extends React.Component {
           this.setState((currentState)=>(
           {books:[...currentState.books,book]}
           ))
-        };
+        }
+        ;
       })
     );
   };
@@ -53,12 +66,23 @@ class BooksApp extends React.Component {
     search(query)
       .then((searchedBooks) => {
         Array.isArray(searchedBooks)
-          ? this.setState({ searchedBooks: searchedBooks })
+          ? this.setState({ searchedBooks: this.adjustTheShelfs(searchedBooks) })
           : this.setState({ searchedBooks: [] });
       })
       .catch(this.setState({ searchedBooks: [] }));
   };
+  adjustTheShelfs=(searchedBooks)=>{
 
+    const updatedBooks = [...searchedBooks]
+    updatedBooks.forEach(s=>{
+      this.state.books.forEach(b=>{
+        if (s.id===b.id){
+          s.shelf=b.shelf
+        }
+      })
+    })
+    return updatedBooks
+  }
   resetSearchState = () => {
     this.setState({ showSearchPage: false, searchedBooks: [] });
   };

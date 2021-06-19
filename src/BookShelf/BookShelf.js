@@ -8,20 +8,22 @@ const bookShelf = ({ shelf, books, updateBookShelf }) => {
       <div className="bookshelf-books">
         <ol className="books-grid">
           {books.map((bookN) => {
-            
             const book = bookN && validateAttributes(bookN);
             return (
-                book&&<li key={book.id}>
-                {
-                  <Book
-                    id={book.id}
-                    title={book.title}
-                    authors={book.authors}
-                    backGroundURL={book.imageLinks.smallThumbnail}
-                    updateBookShelf={updateBookShelf}
-                  />
-                }
-              </li>
+              book && (
+                <li key={book.id}>
+                  {
+                    <Book
+                      id={book.id}
+                      title={book.title}
+                      authors={book.authors}
+                      backGroundURL={book.imageLinks.smallThumbnail}
+                      updateBookShelf={updateBookShelf}
+                      shelf={getTheShelfType(book.shelf)}
+                    />
+                  }
+                </li>
+              )
             );
           })}
         </ol>
@@ -29,17 +31,19 @@ const bookShelf = ({ shelf, books, updateBookShelf }) => {
     </div>
   );
 };
+const getTheShelfType = (shelf) => {
+    return shelf?shelf:"none"
+};
 const validateAttributes = (book) => {
   const validatedBook = { ...book };
   validatedBook.id = book.id ? book.id : "Unknown";
   validatedBook.title = book.title ? book.title : "Unknown";
   validatedBook.authors = book.authors ? book.authors : ["Unknown"];
-  if(!(book.imageLinks&&book.imageLinks.smallThumbnail))
-    {
-        validatedBook.imageLinks={
-            smallThumbnail:"Unknown"
-        }
-    }
+  if (!(book.imageLinks && book.imageLinks.smallThumbnail)) {
+    validatedBook.imageLinks = {
+      smallThumbnail: "Unknown",
+    };
+  }
 
   return validatedBook;
 };
