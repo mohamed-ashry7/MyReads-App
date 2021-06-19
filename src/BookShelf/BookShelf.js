@@ -2,7 +2,6 @@ import React from "react";
 import Book from "../Book/Book";
 import PropTypes from "prop-types";
 const bookShelf = ({ shelf, books, updateBookShelf }) => {
-  console.log(books);
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{shelf}</h2>

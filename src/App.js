@@ -25,17 +25,29 @@ class BooksApp extends React.Component {
   }
 
   updateBookShelf = (id, shelf) => {
+    let doesExist = false;
     const updatedBooks = this.state.books.map((book) => ({ ...book }));
     updatedBooks.forEach((book) => {
       if (book.id === id) {
         book.shelf = shelf;
+        doesExist = true;
       }
     });
-
-    this.setState({
-      books: updatedBooks,
-    });
-    get(id).then((book) => update(book, shelf).then(console.log(book)));
+    if (doesExist) {
+      this.setState({
+        books: updatedBooks,
+      });
+    }
+    get(id).then((book) =>
+      update(book, shelf).then(() => {
+        if (!doesExist) {
+          book.shelf=shelf
+          this.setState((currentState)=>(
+          {books:[...currentState.books,book]}
+          ))
+        };
+      })
+    );
   };
   searchBooks = (query) => {
     search(query)
@@ -79,10 +91,12 @@ class BooksApp extends React.Component {
                 updateBookShelf={this.updateBookShelf}
               />
               <div className="open-search">
-                <Link to='/search'>
-                <button onClick={() => this.setState({ showSearchPage: true })}>
-                  Add a book
-                </button>
+                <Link to="/search">
+                  <button
+                    onClick={() => this.setState({ showSearchPage: true })}
+                  >
+                    Add a book
+                  </button>
                 </Link>
               </div>
             </div>
